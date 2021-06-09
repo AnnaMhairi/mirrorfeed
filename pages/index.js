@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { gql, useQuery, useLazyQuery } from "@apollo/client";
 import client from "../apollo-client";
-
+import ExpandableCard from "../components/ExpandableCard";
+import Button from "@material-ui/core/Button";
+import Container from "@material-ui/core/Container";
 import Head from "next/head";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
@@ -80,46 +82,41 @@ export default function Home({ posts }) {
   }
 
   return (
-    <div>
-      <div className="container">
-        <Head>
-          <title>Create Next App</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
+    <Container className={styles.container}>
+      <Head>
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter&display=swap"
+          rel="stylesheet"
+        />
+      </Head>
 
-        <main>
-          <div>{loading && `Loading...`}</div>
-          <div id="list">
-            <ul>
-              {parsedList.map((post) => (
-                <li>{post.title}</li>
-              ))}
-            </ul>
-          </div>
-          <div className={styles.row}>
-            <button
-              className={styles.btn}
-              disabled={loading}
-              size="mini"
-              id="buttonLoadMore"
-              onClick={() => handleClick()}
-            >
-              Load more
-            </button>
-          </div>
-        </main>
-
-        <footer>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      <main>
+        <h2 className={styles.pageTitle}>Mirror.xyz Feed</h2>
+        <div>{loading && `Loading...`}</div>
+        <div id="list">
+          <ul>
+            {parsedList.map((post) => (
+              <div>
+                <ExpandableCard post={post} />
+              </div>
+            ))}
+          </ul>
+        </div>
+        <div className={styles.row}>
+          <Button
+            className={styles.btn}
+            variant="contained"
+            disabled={loading}
+            color="primary"
+            onClick={() => handleClick()}
           >
-            Powered by{" "}
-            <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
-          </a>
-        </footer>
-      </div>
-    </div>
+            Load more
+          </Button>
+        </div>
+      </main>
+
+      <footer />
+    </Container>
   );
 }
